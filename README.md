@@ -1,7 +1,5 @@
 # refactor-notebooks
  
-![](./img/refactor-notebook-diagram.webp)
-
 ## Set-up the repo
 
 1. **Version Control**: Init the git repo
@@ -14,3 +12,19 @@
     - `dvc add data/01_raw/online_retail.xlsx`
     - `dvc push`
 
+## Overview about the refactoring process
+![](./img/refactor-notebook-diagram.webp)
+
+
+### Converting notebook
+
+1. Example notebook: `notebooks/Original_OnlineRetail_Cohort.ipynb`
+2. Make a copy: `notebooks/Original_OnlineRetail_Cohort-Copy1.ipynb`
+3. On Jupyter notebook:
+    - Cell -> All Output -> Clear
+    - Run All (To make sure that all cells are in right sequence)
+    - Check all results
+4. On Terminal, run:
+```
+jupyter nbconvert notebooks/Original_OnlineRetail_Cohort-Copy1.ipynb --to python
+```
