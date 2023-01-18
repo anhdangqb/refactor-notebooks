@@ -88,5 +88,5 @@ If you reuse local module a lot, consider to convert them to proper Python pkg w
 
 
 ## Later topics
+- Manage & config with yaml files
 - CI/CD Git Actions to automate tests/formatting
-- Pytest fixture (testing on data)
