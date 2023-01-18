@@ -18,6 +18,8 @@
 
 ### Converting notebook
 
+> Convert the notebook to script
+
 1. Example notebook: `notebooks/Original_OnlineRetail_Cohort.ipynb`
 2. Make a copy: `notebooks/Original_OnlineRetail_Cohort-Copy1.ipynb`
 3. On Jupyter notebook:
@@ -28,3 +30,8 @@
 ```
 jupyter nbconvert notebooks/Original_OnlineRetail_Cohort-Copy1.ipynb --to python
 ```
+5. Check the script output, remove all print/notebook statements: `print(...)`, `df.head()`, `df.describe(...)`, etc.
+
+
+### Identify code smells
+
