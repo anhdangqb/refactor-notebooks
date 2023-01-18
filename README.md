@@ -35,3 +35,12 @@ jupyter nbconvert notebooks/Original_OnlineRetail_Cohort-Copy1.ipynb --to python
 
 ### Identify code smells
 
+> Read through the code, sketch out the flow, list any code smells
+
+1. Sketch out the flow
+    - Ingest raw data
+    - Process/clean data
+    - Aggregate to have the data input for plotting
+    - Plotting the reports
+2. List code smells & [Clean code](https://github.com/davified/clean-code-ml) enhancements
+3. Leave `# TODO` comments for things to change

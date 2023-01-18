@@ -64,11 +64,11 @@ df = pd.read_excel('../data/01_raw/online_retail.xlsx', dtype={'CustomerID': str
 
 
 # TODO: PROCESSING
+# TODO: Convert to function, take col for remove null (parameterize)
 df2 = df[~df.CustomerID.isnull()].copy()
 df['order_value'] = df.Quantity * df.UnitPrice
 
-# TODO: Parameterize / convert to function (winsorize)
-
+# TODO: Parameterize / convert to function (DRY, winsorize)
 # Parameters
 quantity_cap = 40
 order_value_cap = 60 
@@ -81,6 +81,7 @@ df2.dropna(inplace=True)
 # ## Prepare the Data for Cohort Analysis
 # ### Step 1. `invoice_period`
 # Generate the invoice_period by extracting Year-Month of InvoiceDate. By this, we change the frequency from Daily to Monthly.
+# TODO: Function to convert date to %Y-%, (DRY, Parameterize)
 df2['invoice_period'] = df['InvoiceDate'].apply(lambda x: x.strftime('%Y-%m'))
 df2.set_index('CustomerID', inplace=True) 
 df2['cohort_group'] = df2.groupby(level=0)['InvoiceDate'].min().apply(lambda x: x.strftime('%Y-%m'))
@@ -116,6 +117,7 @@ cohorts.set_index(['cohort_period','cohort_group'], inplace=True)
 
 
 # ## Cohort Analysis
+# TODO: Convert to function, creating analysis (beside total_value)
 cohorts['total_value'].unstack(0)
 unstacked_value = cohorts['total_value'].unstack(0)
 
@@ -130,8 +132,6 @@ ax.set_xlabel('Cohort Periods')
 ax.set_title('Monthly Total Sales Across Cohorts');
 
 
-# In[25]:
-
 
 # TODO_07: Comments and highlight any insights from the charts
 
@@ -143,9 +143,9 @@ ax.set_title('Monthly Total Sales Across Cohorts');
 # - Spread the `cust_cnt` - active users over periods of each cohorts
 # - Divide for the **retention rate**: `cust_retention.divide(cohorts_size, axis=0)`
 
-# In[26]:
 
 # TODO: AGGREGATING
+# TODO: Convert to function, creating retention by different definition (beside cust_cnt)
 cohorts_size = cohorts.groupby(level=1)['cust_cnt'].first()
 cust_retention = cohorts['cust_cnt'].unstack(0)
 cust_retention = cust_retention.divide(cohorts_size, axis=0)
@@ -161,9 +161,4 @@ ax.set_ylabel('Cohort Groups')
 ax.set_xlabel('Cohort Periods')
 ax.set_title('Cohorts Monhtly Retention');
 
-
-# In[30]:
-
-
-# TODO_09: Comments and highlight any insights from the charts
 
