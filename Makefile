@@ -1,4 +1,4 @@
-setup:
+init_setup:
 	@echo "Install poetry"
 	curl -sSL https://install.python-poetry.org | python3 -
 	@echo "Test poetry install succesfully"
@@ -7,13 +7,15 @@ setup:
 	poetry install
 	@echo "Set-up pre-commit hooks..."
 	poetry run pre-commit install
+	@echo "Set-up gcp project"
+	gcloud auth application-default set-quota-project analytics-training-hub
 	@echo "Pull data from DVC..."
 	poetry run dvc pull
 	@echo "Activating virtual environment..."
 	poetry shell
 
 gcloud_setup:
-	@echo "Download gcloud cli"
+	@echo "Download gcloud cli. When finish, please start a new Terminal"
 	curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-420.0.0-linux-x86_64.tar.gz
 	@echo "Unzip gcloud cli"
 	tar -xf google-cloud-cli-420.0.0-linux-x86_64.tar.gz
