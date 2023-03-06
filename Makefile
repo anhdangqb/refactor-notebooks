@@ -1,4 +1,8 @@
 setup:
+	@echo "Install poetry"
+	curl -sSL https://install.python-poetry.org | python3 -
+	@echo "Test poetry install succesfully"
+	poetry --version
 	@echo "Installing dependencies..."
 	poetry install
 	@echo "Set-up pre-commit hooks..."
@@ -7,6 +11,18 @@ setup:
 	poetry run dvc pull
 	@echo "Activating virtual environment..."
 	poetry shell
+
+gcloud_setup:
+	@echo "Download gcloud cli"
+	curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-420.0.0-linux-x86_64.tar.gz
+	@echo "Unzip gcloud cli"
+	tar -xf google-cloud-cli-420.0.0-linux-x86_64.tar.gz
+	@echo "Install gcloud"
+	./google-cloud-sdk/install.sh
+
+gcloud_auth:
+	@echo "Set up GCP auth"
+	gcloud auth application-default login --no-launch-browser
 
 dvc_check:
 	[ -d ./.dvc ] && poetry run dvc status || dvc init
