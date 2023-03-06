@@ -31,7 +31,7 @@ dvc_check:
 
 docs_view:
 	@echo View API documentation...
-	pdoc src/. --http localhost:8080
+	pdoc src/. 
 
 docs_build:
 	@echo Build API documentation...

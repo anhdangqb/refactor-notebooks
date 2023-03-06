@@ -59,3 +59,25 @@ make init_setup
 8. Check:
   - In folder `01_raw`, data (xlsx file) should be there, just downloaded from gs
   - Run `make run_pipeline`, it will run the pipeline we set-up in `src/pipeline.py`, with the output to `data/02_processed`
+
+## Deep-dive and explore
+
+- [ ] Go to `Makefile`, and explore the commands
+- [ ] Go to `src/pipeline.py`, and explore the pipeline code (empowered by _Hydra_)
+- [ ] Go to `config/pipeline.yaml`, and explore paramaters of the pipeline
+- [ ] Go to `pyproject.toml`, and explore the dependencies (created by _Poetry_)
+- [ ] Try to access to `docs` on local machine
+    - `poetry install`
+    - `poetry shell`
+    - `pdoc src/.`
+
+**More deep-dive:** On your working repo (should not have pdocs, poetry, etc. as you have not created it).
+
+> Read: [DS-project-structure-tools.md](./DS-project-structure-tools.md)
+
+- [ ] Set-up **poetry** for your local machine
+- [ ] Create the `src/pipeline.py` and `config/pipeline.yaml` with **Hydra**
+- [ ] Using **pdoc** to generate documentation
+- [ ] Set-up **Makefile** to automate the process
+- [ ] OPTIONAL: Set-up **pre-commit**
+

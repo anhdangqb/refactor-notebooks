@@ -121,11 +121,6 @@ if __name__ == "__main__":
 1. Run the script: `python src/pipeline.py` (Be prepare for any issue, try to solve it!)
 2. Once you run it successfully, the new output csv should be in `02_processed/clean_retail.csv`
 3. Hydra generate the folder `outputs/` to store all logs, and settings of each run → Put it into the `.gitignore`
-4. New outputs add it to `dvc`
-
-```bash
-dvc add data/02_processed/clean_retail.csv
-```
 
 ## pdoc
 
