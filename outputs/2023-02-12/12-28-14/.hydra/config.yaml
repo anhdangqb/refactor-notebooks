@@ -1,0 +1,14 @@
+raw:
+  path: data/01_raw/online_retail.xlsx
+processed:
+  path: data/02_processed/clean_retail.csv
+  config:
+    null_cols:
+    - CustomerID
+    outlier_policies:
+      UnitPrice:
+      - 0
+      - 10
+      Quantity:
+      - 0
+      - 50

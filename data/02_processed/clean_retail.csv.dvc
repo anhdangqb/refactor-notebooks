@@ -1,0 +1,4 @@
+outs:
+- md5: 61aa94c5d2355be8d78820d41fcaf9ce
+  size: 3747137
+  path: clean_retail.csv

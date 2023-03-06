@@ -1,94 +1,4 @@
-# refactor-notebooks
-
-## Set-up the repo
-
-1. **Version Control**: Init the git repo
-2. **Dependencies**:Can reuse existing environment: `conda activate analytics-training-samples`
-3. **Data**: Set-up `dvc`
-    - Create folder `data/01_raw`: Put the data there
-    - `dvc init`
-    - Set up remote storage: `dvc remote add -d storage gs://dvc-data-storage` (separate steps to set-up Google Storage and connect local machine to GCP)
-    - Turn on autostaging: `dvc config core.autostage true`
-    - `dvc add data/01_raw/online_retail.xlsx`
-    - `dvc push`
-
-
-## Overview about the refactoring process
-![](./image/refactor-notebook-diagram.webp)
-
-
-## Converting notebook
-
-> Convert the notebook to script
-
-1. Example notebook: `notebooks/Original_OnlineRetail_Cohort.ipynb`
-2. Make a copy: `notebooks/Original_OnlineRetail_Cohort-Copy1.ipynb`
-3. On Jupyter notebook:
-    - Cell -> All Output -> Clear
-    - Run All (To make sure that all cells are in right sequence)
-    - Check all results
-4. On Terminal, run:
-```
-jupyter nbconvert notebooks/Original_OnlineRetail_Cohort-Copy1.ipynb --to python
-```
-5. Check the script output, remove all print/notebook statements: `print(...)`, `df.head()`, `df.describe(...)`, etc.
-
-
-## Identify code smells
-
-> Read through the code, sketch out the flow, list any code smells
-
-1. Sketch out the flow
-    - Ingest & process data
-    - Aggregate to have the data input for plotting
-    - Plotting the reports
-2. List code smells & [Clean code](https://github.com/davified/clean-code-ml) enhancements
-3. Leave `# TODO` comments for things to change
-
-
-## Write / Test / Local module
-
-> Convert codes into DRY functions, write tests, and create local module (which could be imported to notebooks)
-
-1. Create the `src` folder to keep all source codes
-2. Create `tests` folder to keep tests for source codes
-3. Write/Test follows the Test-driven Development (TDD) approach
-    - `tests/test_*.py`: Write the test first, then write the code
-    - `pytest`: Run the test, make sure it fails
-    - Write the code, make sure it passes
-    - Refactor the code, make sure it still passes
-4. Structures within source code:
-    - `src/`: All source codes
-        - `__init__.py`: Empty file to make `src` a module
-        - `utils.py`: Utility functions
-        - `ingest.py`: All functions to process/clean data
-        - `process.py`: All functions to aggregate data
-        - `plot.py`: All functions to plot data
-    - `tests/`: All tests
-        - `__init__.py`: Empty file to make `tests` a module
-        - `test_utils.py`: Utility functions for tests
-        - `test_ingest.py`: Test for `ingest.py`
-        - `test_process.py`: Test for `process.py`
-        - `test_plot.py`: Test for `plot.py`
-    - Within each test file:
-        - Import the functions from local modules (`src` folder)
-        - Tests for each function could be organized by `Class` with each test cases as methods (naming corresponding to the function name)
-5. Write the code until passing the tests
-6. Reformat with `black`
-7. Commit to git
-8. Pull request to merge to `main` branch
-
-## Import and use new functions on notebook
-
-We refactor codes from the Original noteboks as local modules, and import them to the new notebooks. This will enforce the TDD approach, and reusable of functions across notebooks.
-
-If you reuse local module a lot, consider to convert them to proper Python pkg with `pip` manager
-
-> See: `notebooks/Refactored_OnlineRetail_Cohort.ipynb`
-
-
-# Other topics
-## Structure a DS project
+# Structure a DS project
 
 After refactoring the notebook into a project with structured and scripts, we could use further tools to support our work even more conveniently.
 
@@ -98,7 +8,7 @@ After refactoring the notebook into a project with structured and scripts, we co
 - `pre-commit`: Python pre-commit hooks (automate code formatting, linting, testing, etc)
 - `Makefile`: Python Makefile (automate the workflow)
 
-## Poetry
+# Poetry
 
 - Python dependency management tool (alternative to pip)
     - Separate main dependencies and sub-dependencies
@@ -106,7 +16,7 @@ After refactoring the notebook into a project with structured and scripts, we co
     - Avoid installing new packages conflicts with existing one
     - Package your project in several lines of code
 
-### Install
+## Install
 
 Install `poetry`: [https://python-poetry.org/docs/](https://python-poetry.org/docs/)
 
@@ -123,24 +33,30 @@ Add `export PATH="/Users/anhdang/.local/bin:$PATH"` to your shell configuration 
 3. Run the config: `source ~/.bash_profile`
 4. Test: `poetry --version`
 
-### Usages
+## Usages
 
 > You have know about `requirements.txt` and `pip install -r src/requirements.txt` as one way to manage the dependencies. Now, we will introduce a relatively “better” tool to handle it
->
 
-#### New repo
+### New repo
 
 1. Init poetry: `poetry init`, this will create file `pyproject.toml` (main dependencies file, in replace for `requirements.txt`
 2. Follow an interactive step-by-step
 
-#### Repo with existing poetry
+### Repo with existing poetry
 
 1. `poetry install` (install every dependencies in `pyproject.toml`
 2. Add new library: `poetry add <name-of-pkg>` (install and update the dependencies file)
 3. Remove: `poetry remove <name-of-pkg>`
 4. Can use as the virtual env (similar to conda): `poetry shell` (auto detect the `pyproject.toml`)
 
-## Hydra
+### Hands-on
+In our `demo-notebook-refactor`repo:
+
+1. Create a new conda env: `conda create -n demo-notebook-refactor python=3.10`
+2. Run: `poetry install` (this will install all dependencies in `pyproject.toml`)
+
+
+# Hydra
 
 > Hydra is the python framework that enable us to manage the config files. [https://hydra.cc/docs/intro/](https://hydra.cc/docs/intro/)
 >
@@ -215,7 +131,7 @@ if __name__ == "__main__":
 dvc add data/02_processed/clean_retail.csv
 ```
 
-## pdoc
+# pdoc
 
 > `pdoc` auto-generates API documentation that follows your project's Python module hierarchy
 >
@@ -224,7 +140,7 @@ dvc add data/02_processed/clean_retail.csv
 3. Output to the `/docs` as html file: `pdoc src/. -o docs`
 
 
-## Pre-commit hook
+# Pre-commit hook
 
 > Source: [https://www.architecture-performance.fr/ap_blog/some-pre-commit-git-hooks-for-python/](https://www.architecture-performance.fr/ap_blog/some-pre-commit-git-hooks-for-python/)
 >
@@ -289,7 +205,7 @@ git add .
 git commit -m "Some message"
 ```
 
-## Makefile
+# Makefile
 
 > We use `Makefile`to power up the ML project CLI usage, and provide some handy CLI for anyone to access/reuse the repo
 >

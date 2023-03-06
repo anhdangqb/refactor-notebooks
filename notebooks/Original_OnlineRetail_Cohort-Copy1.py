@@ -51,35 +51,33 @@
 # In[1]:
 
 
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-from matplotlib import rcParams
 import seaborn as sns
-import pandas as pd
+
+# # TODO: INGESTING
+# df = pd.read_excel("../data/01_raw/online_retail.xlsx", dtype={"CustomerID": str})
 
 
-# TODO: INGESTING
-df = pd.read_excel("../data/01_raw/online_retail.xlsx", dtype={"CustomerID": str})
+# # TODO: PROCESSING
+# # TODO: Convert to function, take col for remove null (parameterize)
+# df2 = df[~df.CustomerID.isnull()].copy()
 
+# # TODO: Parameterize / convert to function (DRY, winsorize)
+# # Parameters
+# quantity_cap = 40
+# order_value_cap = 60
+# order_value_flr = 0
 
-# TODO: PROCESSING
-# TODO: Convert to function, take col for remove null (parameterize)
-df2 = df[~df.CustomerID.isnull()].copy()
+# df2 = df[
+#     (df.Quantity <= quantity_cap)
+#     & (df.order_value <= order_value_cap)
+#     & (df.order_value > order_value_flr)
+# ]
+# df2.dropna(inplace=True)
+
 df["order_value"] = df.Quantity * df.UnitPrice
-
-# TODO: Parameterize / convert to function (DRY, winsorize)
-# Parameters
-quantity_cap = 40
-order_value_cap = 60
-order_value_flr = 0
-
-df2 = df[
-    (df.Quantity <= quantity_cap)
-    & (df.order_value <= order_value_cap)
-    & (df.order_value > order_value_flr)
-]
-df2.dropna(inplace=True)
 
 
 # ## Prepare the Data for Cohort Analysis
@@ -89,7 +87,9 @@ df2.dropna(inplace=True)
 df2["invoice_period"] = df["InvoiceDate"].apply(lambda x: x.strftime("%Y-%m"))
 df2.set_index("CustomerID", inplace=True)
 df2["cohort_group"] = (
-    df2.groupby(level=0)["InvoiceDate"].min().apply(lambda x: x.strftime("%Y-%m"))
+    df2.groupby(level=0)["InvoiceDate"]
+    .min()
+    .apply(lambda x: x.strftime("%Y-%m"))
 )
 df2.reset_index(inplace=True)
 
